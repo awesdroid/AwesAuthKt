@@ -19,7 +19,9 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+        // Fix CustomTab issue
+        // https://github.com/openid/AppAuth-Android/issues/423#issuecomment-447013411
+        maven { url "https://dl.bintray.com/hnljp/AppAuth-Android" }
     }
 }
 

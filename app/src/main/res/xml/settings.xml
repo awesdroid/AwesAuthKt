@@ -1,0 +1,35 @@
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+            android:key="auth_category"
+            android:title="@string/title_auth"
+            android:layout="@layout/preferneces_category">
+
+        <ListPreference
+                android:key="@string/pref_key_google_auth_type"
+                android:title="@string/pref_auth_type_list"
+                android:defaultValue="-1"
+                android:entries="@array/pref_auth_list_titles"
+                android:entryValues="@array/pref_auth_list_values"
+                android:negativeButtonText="@null"
+                android:positiveButtonText="@null"
+                android:icon="@android:drawable/ic_lock_lock"/>
+
+        <CheckBoxPreference
+                android:key="@string/pref_key_use_pending_intent"
+                android:title="@string/cb_use_pending_intent_title"
+                android:icon="@android:drawable/ic_menu_add"
+                android:enabled="false"
+                />
+
+        <SwitchPreference
+                android:key="@string/pref_key_use_id_token"
+                android:title="@string/pref_key_use_id_token_title"
+                android:enabled="false"
+                android:icon="@android:drawable/ic_menu_view"/>
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

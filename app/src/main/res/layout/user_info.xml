@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/userinfo_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:orientation="vertical"
+        android:background="@color/blue_grey_900"
+        android:elevation="24dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        tools:showIn="@layout/fragment_google_signin">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+        <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:id="@+id/userinfo_avatar"
+                android:contentDescription="@string/userinfo_profile_content_description"
+                app:srcCompat="@drawable/unknown_user_48dp"/>
+
+        <TextView
+                android:id="@+id/userinfo_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingEnd="0dp"
+                tools:text="User Name"
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimary"/>
+
+    </LinearLayout>
+
+    <!--<TextView-->
+    <!--android:id="@+id/userinfo_json"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--tools:text="Account: ...\n PhotoUrl: ..."-->
+    <!--android:scrollbars="vertical"-->
+    <!--android:textColor="@color/browser_actions_bg_grey"/>-->
+
+    <ScrollView
+            android:id="@+id/userinfo_scrollview"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:fillViewport="true"
+            >
+
+        <TextView
+                android:id="@+id/userinfo"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                tools:text="ID: ...\n Account: ..."
+                tools:ignore="ObsoleteLayoutParam,ScrollViewSize"
+                android:textColor="@color/blue_grey_500"/>
+    </ScrollView>
+</LinearLayout>
