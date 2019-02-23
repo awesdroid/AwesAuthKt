@@ -3,7 +3,7 @@ package io.awesdroid.awesauthkt.db.converter
 import android.util.Log
 import androidx.room.TypeConverter
 import io.awesdroid.awesauthkt.model.AppAuthState
-import io.awesdroid.awesauthkt.utils.TAG
+import io.awesdroid.libkt.common.utils.TAG
 import net.openid.appauth.AuthState
 import org.json.JSONException
 

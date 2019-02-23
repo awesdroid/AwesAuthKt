@@ -15,9 +15,9 @@ import io.awesdroid.awesauthkt.db.entity.ConfigEntity
 import io.awesdroid.awesauthkt.db.entity.StateEntity
 import io.awesdroid.awesauthkt.model.AppAuthConfig
 import io.awesdroid.awesauthkt.model.AppAuthState
-import io.awesdroid.awesauthkt.model.UriAdapter
 import io.awesdroid.awesauthkt.service.AppAuthService
-import io.awesdroid.awesauthkt.utils.TAG
+import io.awesdroid.libkt.android.gson.UriAdapter
+import io.awesdroid.libkt.common.utils.TAG
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import net.openid.appauth.AuthState

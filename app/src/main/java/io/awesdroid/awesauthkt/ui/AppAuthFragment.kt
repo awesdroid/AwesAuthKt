@@ -19,9 +19,13 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import io.awesdroid.awesauthkt.R
 import io.awesdroid.awesauthkt.model.AppAuthState
-import io.awesdroid.awesauthkt.utils.*
+import io.awesdroid.awesauthkt.utils.RC_AUTH
+import io.awesdroid.awesauthkt.utils.TYPE_APPAUTH
+import io.awesdroid.awesauthkt.utils.TYPE_NONE
 import io.awesdroid.awesauthkt.viewmodel.AppAuthViewModel
 import io.awesdroid.awesauthkt.viewmodel.SettingsViewModel
+import io.awesdroid.libkt.common.utils.TAG
+import io.awesdroid.libkt.common.utils.prettyJsonString
 import kotlinx.android.synthetic.main.auth_status.*
 import kotlinx.android.synthetic.main.fragment_appauth.*
 import kotlinx.android.synthetic.main.fragment_appauth.view.*
@@ -225,7 +229,7 @@ class AppAuthFragment : Fragment() {
             e.printStackTrace()
         }
 
-        this.userinfo.text = Utils.prettyJson(userInfo.toString())
+        this.userinfo.text = prettyJsonString(userInfo.toString())
 
     }
 

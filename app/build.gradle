@@ -106,4 +106,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.ext:truth:1.1.0'
     androidTestImplementation 'com.google.truth:truth:0.42'
+
+    implementation 'com.github.awesdroid:awes-libkt:0.2.0'
 }

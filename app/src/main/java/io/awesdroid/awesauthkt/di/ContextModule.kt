@@ -3,7 +3,7 @@ package io.awesdroid.awesauthkt.di
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import io.awesdroid.awesauthkt.utils.ActivityHelper
+import io.awesdroid.libkt.android.ui.ActivityHelper
 
 /**
  * @auther Awesdroid

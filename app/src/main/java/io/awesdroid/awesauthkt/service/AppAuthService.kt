@@ -8,8 +8,8 @@ import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
 import io.awesdroid.awesauthkt.model.AppAuthConfig
 import io.awesdroid.awesauthkt.net.Http
-import io.awesdroid.awesauthkt.utils.ActivityHelper
-import io.awesdroid.awesauthkt.utils.TAG
+import io.awesdroid.libkt.android.ui.ActivityHelper
+import io.awesdroid.libkt.common.utils.TAG
 import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers

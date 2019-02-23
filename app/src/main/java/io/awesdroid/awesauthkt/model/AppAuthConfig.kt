@@ -2,6 +2,7 @@ package io.awesdroid.awesauthkt.model
 
 import android.net.Uri
 import com.google.gson.GsonBuilder
+import io.awesdroid.libkt.android.gson.UriAdapter
 
 /**
  * @auther Awesdroid

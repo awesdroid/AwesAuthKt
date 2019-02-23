@@ -1,7 +1,7 @@
 package io.awesdroid.awesauthkt.net
 
 import android.util.Log
-import io.awesdroid.awesauthkt.utils.TAG
+import io.awesdroid.libkt.common.utils.TAG
 import io.reactivex.Maybe
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

@@ -10,7 +10,7 @@ import io.awesdroid.awesauthkt.db.AuthDatabase
 import io.awesdroid.awesauthkt.db.dao.StateDao
 import io.awesdroid.awesauthkt.db.entity.StateEntity
 import io.awesdroid.awesauthkt.model.AppAuthState
-import io.awesdroid.awesauthkt.model.UriAdapter
+import io.awesdroid.libkt.android.gson.UriAdapter
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import junit.framework.TestCase.assertNotNull

@@ -15,6 +15,8 @@ import io.awesdroid.awesauthkt.di.DaggerFragmentComponent
 import io.awesdroid.awesauthkt.utils.*
 import io.awesdroid.awesauthkt.viewmodel.AppAuthViewModel
 import io.awesdroid.awesauthkt.viewmodel.SettingsViewModel
+import io.awesdroid.libkt.android.ui.ActivityHelper
+import io.awesdroid.libkt.common.utils.TAG
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 

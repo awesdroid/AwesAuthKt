@@ -1,6 +1,6 @@
 package io.awesdroid.awesauthkt.model
 
-import io.awesdroid.awesauthkt.utils.Utils
+import io.awesdroid.libkt.common.utils.prettyJsonString
 import net.openid.appauth.AuthState
 
 /**
@@ -29,6 +29,6 @@ data class AppAuthState(var authState: AuthState?) {
         get() = authState?.lastTokenResponse != null
 
     override fun toString(): String {
-        return Utils.prettyJson(authState!!.jsonSerializeString())
+        return prettyJsonString(authState!!.jsonSerializeString())
     }
 }

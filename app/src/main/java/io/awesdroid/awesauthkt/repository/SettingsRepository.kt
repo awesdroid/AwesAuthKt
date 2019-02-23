@@ -7,9 +7,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.awesdroid.awesauthkt.R
-import io.awesdroid.awesauthkt.utils.ActivityHelper
-import io.awesdroid.awesauthkt.utils.TAG
 import io.awesdroid.awesauthkt.utils.TYPE_NONE
+import io.awesdroid.libkt.android.ui.ActivityHelper
+import io.awesdroid.libkt.common.utils.TAG
 
 /**
  * @auther Awesdroid

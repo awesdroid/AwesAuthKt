@@ -8,8 +8,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import io.awesdroid.awesauthkt.service.GoogleSignInService
-import io.awesdroid.awesauthkt.utils.ActivityHelper
-import io.awesdroid.awesauthkt.utils.TAG
+import io.awesdroid.libkt.android.ui.ActivityHelper
+import io.awesdroid.libkt.common.utils.TAG
 import io.reactivex.schedulers.Schedulers
 
 /**
