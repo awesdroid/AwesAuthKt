@@ -7,7 +7,7 @@ import androidx.room.Query
 import io.awesdroid.awesauthkt.db.entity.ConfigEntity
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 @Dao
 interface ConfigDao {

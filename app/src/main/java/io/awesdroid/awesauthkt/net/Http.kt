@@ -10,7 +10,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.regex.Pattern
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 object Http {
     fun getUserInfo(url: String, token: String): Maybe<String> {

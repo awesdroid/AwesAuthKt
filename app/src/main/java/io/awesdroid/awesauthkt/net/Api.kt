@@ -6,7 +6,7 @@ import retrofit2.http.Header
 import retrofit2.http.Url
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 interface Api {
     @GET

@@ -4,7 +4,7 @@ import io.awesdroid.libkt.common.utils.prettyJsonString
 import net.openid.appauth.AuthState
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 data class AppAuthState(var authState: AuthState?) {
     val authorizationCode: String?

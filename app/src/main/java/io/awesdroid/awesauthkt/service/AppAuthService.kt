@@ -22,7 +22,7 @@ import org.json.JSONObject
 import java.util.concurrent.CompletableFuture
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 class AppAuthService {
     private var context: Context? = null

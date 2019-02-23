@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import io.awesdroid.awesauthkt.model.AppAuthState
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 @Entity(tableName = "state")
 class StateEntity {

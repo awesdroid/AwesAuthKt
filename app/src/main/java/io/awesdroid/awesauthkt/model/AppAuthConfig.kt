@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder
 import io.awesdroid.libkt.android.gson.UriAdapter
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 class AppAuthConfig internal constructor() {
 

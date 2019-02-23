@@ -27,7 +27,7 @@ import java.nio.charset.StandardCharsets
 import java.util.concurrent.CompletableFuture
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 class AppAuthRepository(private var context: Context?) {
     private var appAuthService: AppAuthService? = null

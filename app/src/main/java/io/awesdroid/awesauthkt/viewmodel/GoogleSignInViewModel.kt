@@ -13,7 +13,7 @@ import io.awesdroid.libkt.common.utils.TAG
 import io.reactivex.schedulers.Schedulers
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 class GoogleSignInViewModel(application: Application) : AndroidViewModel(application) {
     private val account: MutableLiveData<GoogleSignInAccount> = MutableLiveData<GoogleSignInAccount>(null)

@@ -15,7 +15,7 @@ import io.awesdroid.awesauthkt.viewmodel.SettingsViewModel
 import io.awesdroid.libkt.common.utils.TAG
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 class SettingsFragment: PreferenceFragmentCompat() {
 

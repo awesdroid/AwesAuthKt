@@ -29,7 +29,7 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 @RunWith(AndroidJUnit4::class)
 class StateDaoTest {

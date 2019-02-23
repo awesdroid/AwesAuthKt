@@ -7,7 +7,7 @@ import androidx.room.Query
 import io.awesdroid.awesauthkt.db.entity.StateEntity
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 @Dao
 interface StateDao {

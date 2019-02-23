@@ -6,7 +6,7 @@ import io.awesdroid.awesauthkt.model.AppAuthConfig
 import io.awesdroid.libkt.common.utils.TAG
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 class ConfigConverter {
 

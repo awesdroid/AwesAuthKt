@@ -11,7 +11,7 @@ import io.awesdroid.libkt.common.utils.TAG
 import javax.inject.Inject
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
 

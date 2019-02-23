@@ -15,7 +15,7 @@ import org.json.JSONObject
 import javax.inject.Inject
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 class AppAuthViewModel(application: Application) : AndroidViewModel(application) {
     @Inject

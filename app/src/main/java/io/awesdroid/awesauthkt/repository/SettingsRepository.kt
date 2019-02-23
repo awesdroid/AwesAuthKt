@@ -12,7 +12,7 @@ import io.awesdroid.libkt.android.ui.ActivityHelper
 import io.awesdroid.libkt.common.utils.TAG
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 class SettingsRepository(private var context: Context?) {
     private val authType: MutableLiveData<String>

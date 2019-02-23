@@ -8,7 +8,7 @@ import net.openid.appauth.AuthState
 import org.json.JSONException
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 class StateConverter {
     @TypeConverter

@@ -9,7 +9,7 @@ import io.awesdroid.awesauthkt.model.AppAuthConfig
 import io.awesdroid.libkt.android.gson.UriAdapter
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 @Entity(tableName = "config")
 class ConfigEntity {
