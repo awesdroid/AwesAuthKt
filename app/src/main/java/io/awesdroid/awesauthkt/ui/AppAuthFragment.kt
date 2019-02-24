@@ -82,7 +82,6 @@ class AppAuthFragment : Fragment() {
         rootView?.token_info_container?.visibility = View.GONE
         rootView?.userinfo_container?.visibility = View.GONE
 
-        appAuthViewModel.getError().observe(this, Observer { handleError(it) })
 
         return rootView
     }
@@ -95,6 +94,7 @@ class AppAuthFragment : Fragment() {
             it.isAppAuthUsePendingIntent().observe(this, Observer { ret -> this.handleUsePendingIntent(ret) })
         }
 
+        appAuthViewModel.getError().observe(this, Observer { handleError(it) })
         appAuthViewModel.getAuthState().observe(this, Observer { this.handleAuthState(it) })
         appAuthViewModel.getUserInfo().observe(this, Observer { this.handleUserInfo(it) })
     }
