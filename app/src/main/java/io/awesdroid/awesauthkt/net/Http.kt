@@ -1,8 +1,10 @@
 package io.awesdroid.awesauthkt.net
 
 import android.util.Log
+import io.awesdroid.libkt.android.exceptions.LiveException
 import io.awesdroid.libkt.common.utils.TAG
-import io.reactivex.Maybe
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.rx2.await
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -13,25 +15,25 @@ import java.util.regex.Pattern
  * @author Awesdroid
  */
 object Http {
-    fun getUserInfo(url: String, token: String): Maybe<String> {
-        Log.d(TAG, "getUserInfo: token = $token\nurl=$url")
-        val baseUrl = getBaseUrl(url)
-        val client = OkHttpClient.Builder().build()
-        val retrofit = Retrofit.Builder()
-            .client(client)
-            .baseUrl(baseUrl)
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build()
+    suspend fun getUserInfo(url: String, token: String): String? = coroutineScope {
+        try {
+            Log.d(TAG, "getUserInfo: token = $token\nurl=$url")
+            val baseUrl = getBaseUrl(url)
+            val client = OkHttpClient.Builder().build()
+            val retrofit = Retrofit.Builder()
+                .client(client)
+                .baseUrl(baseUrl)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
 
-        val api = retrofit.create(Api::class.java)
-        return Maybe.create { emitter ->
-            api.getUerInfo(url, "Bearer $token")
-                .subscribe(
-                    { emitter.onSuccess(it) },
-                    { e -> emitter.onError(handleError(e)) },
-                    { emitter.onComplete() })
+            retrofit.create(Api::class.java)
+                .getUerInfo(url, "Bearer $token")
+                .await()
+        } catch (e: Throwable) {
+            throw LiveException(LiveException.Type.ERROR_NETWORK, e)
         }
+
     }
 
     @Throws(IllegalArgumentException::class)
@@ -44,10 +46,5 @@ object Http {
             return matcher.group(0)
         }
         throw IllegalArgumentException("Can't get baseURL from: $url")
-    }
-
-    private fun handleError(e: Throwable): Throwable {
-        // TODO
-        return e
     }
 }

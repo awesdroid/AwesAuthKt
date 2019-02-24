@@ -15,7 +15,7 @@ import io.awesdroid.libkt.android.gson.UriAdapter
 class ConfigEntity {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
-    var appAuthConfig: AppAuthConfig? = null
+    lateinit var appAuthConfig: AppAuthConfig
 
     constructor(){}
 

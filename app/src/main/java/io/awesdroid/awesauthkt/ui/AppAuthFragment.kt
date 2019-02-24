@@ -24,6 +24,7 @@ import io.awesdroid.awesauthkt.utils.TYPE_APPAUTH
 import io.awesdroid.awesauthkt.utils.TYPE_NONE
 import io.awesdroid.awesauthkt.viewmodel.AppAuthViewModel
 import io.awesdroid.awesauthkt.viewmodel.SettingsViewModel
+import io.awesdroid.libkt.android.exceptions.LiveException
 import io.awesdroid.libkt.common.utils.TAG
 import io.awesdroid.libkt.common.utils.prettyJsonString
 import kotlinx.android.synthetic.main.auth_status.*
@@ -50,6 +51,7 @@ class AppAuthFragment : Fragment() {
     private var authType: String? = null
     private var usePendingIntent = false
     private lateinit var progressDialog: Dialog
+    private lateinit var alertDialog: AlertDialog
 
 
     override fun onCreateView(
@@ -79,6 +81,8 @@ class AppAuthFragment : Fragment() {
 
         rootView?.token_info_container?.visibility = View.GONE
         rootView?.userinfo_container?.visibility = View.GONE
+
+        appAuthViewModel.getError().observe(this, Observer { handleError(it) })
 
         return rootView
     }
@@ -259,5 +263,16 @@ class AppAuthFragment : Fragment() {
     private fun refreshToken() {
         progressDialog.show()
         appAuthViewModel.refreshToken()
+    }
+
+    private fun handleError(error: LiveException) {
+        progressDialog.takeIf { it.isShowing }?.dismiss()
+        alertDialog = AlertDialog.Builder(requireContext())
+            .setTitle(error.type.name)
+            .setMessage(error.exception.message)
+            .setPositiveButton("OK") { _, _ ->
+                alertDialog.dismiss()
+                requireActivity().finish()
+            }.show()
     }
 }

@@ -8,23 +8,35 @@ import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
 import io.awesdroid.awesauthkt.model.AppAuthConfig
 import io.awesdroid.awesauthkt.net.Http
+import io.awesdroid.libkt.android.exceptions.LiveException
 import io.awesdroid.libkt.android.ui.ActivityHelper
+import io.awesdroid.libkt.common.executors.Dispatchers.CACHED
 import io.awesdroid.libkt.common.utils.TAG
 import io.reactivex.Maybe
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.rx2.rxMaybe
+import kotlinx.coroutines.rx2.rxSingle
 import net.openid.appauth.*
 import net.openid.appauth.AuthorizationServiceConfiguration.RetrieveConfigurationCallback
 import net.openid.appauth.browser.AnyBrowserMatcher
 import net.openid.appauth.connectivity.DefaultConnectionBuilder
 import org.json.JSONException
 import org.json.JSONObject
-import java.util.concurrent.CompletableFuture
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 /**
  * @author Awesdroid
  */
-class AppAuthService {
+class AppAuthService: CoroutineScope {
+    override val coroutineContext: CoroutineContext
+        get() = CACHED
+
     private var context: Context? = null
     private var completeActivity: Activity? = null
     private var cancelActivity: Activity? = null
@@ -33,14 +45,14 @@ class AppAuthService {
     private var authService: AuthorizationService? = null
     private var authRequest: AuthorizationRequest? = null
     private var authIntent: CustomTabsIntent? = null
-    private var isWarmUpBrowser: CompletableFuture<Boolean>? = null
+    private lateinit var isWarmUpBrowser: Deferred<Boolean>
     private var authState: AuthState? = null
 
-    fun init(context: Context, completeActivity: Activity, cancelActivity: Activity) {
+    suspend fun init(context: Context, completeActivity: Activity, cancelActivity: Activity) {
         this.init(context, completeActivity, cancelActivity, null, null)
     }
 
-    fun init(context: Context, completeActivity: Activity, cancelActivity: Activity,
+    suspend fun init(context: Context, completeActivity: Activity, cancelActivity: Activity,
              config: AppAuthConfig?, initState: AuthState?) {
         if (isInit) return
         if (config == null)
@@ -61,22 +73,21 @@ class AppAuthService {
         isInit = true
     }
 
-    private fun initAppAuth(appAuthConfig: AppAuthConfig) {
+    private suspend fun initAppAuth(appAuthConfig: AppAuthConfig) {
         this.appAuthConfig = appAuthConfig
         val discoveryUri = appAuthConfig.discovery_uri
         if (!discoveryUri?.toString().isNullOrEmpty())
-            Single.just(discoveryUri)
-            .subscribeOn(Schedulers.io())
-            .subscribe { uri ->
-                AuthorizationServiceConfiguration.fetchFromUrl(
-                    uri!!,
-                    RetrieveConfigurationCallback { config, ex -> handleConfigFetchResult(config,ex)},
-                    DefaultConnectionBuilder.INSTANCE
-                )
-            }
+            AuthorizationServiceConfiguration.fetchFromUrl(
+                discoveryUri!!,
+                RetrieveConfigurationCallback { config, ex -> handleConfigFetchResult(config,ex)},
+                DefaultConnectionBuilder.INSTANCE
+            )
         else
-            Single.just(AuthorizationServiceConfiguration(appAuthConfig.authorization_endpoint_uri!!, appAuthConfig.token_endpoint_uri!!))
-            .subscribe { configuration -> handleConfigFetchResult(configuration, null) }
+            AuthorizationServiceConfiguration(
+                appAuthConfig.authorization_endpoint_uri!!,
+                appAuthConfig.token_endpoint_uri!!
+            )
+            .run { handleConfigFetchResult(this, null) }
     }
 
     private fun handleConfigFetchResult(
@@ -99,7 +110,7 @@ class AppAuthService {
         }
 
         createAuthRequest(null)
-        isWarmUpBrowser = warmUpBrowser()
+        isWarmUpBrowser = warmUpBrowserAsync()
     }
 
     private fun createAuthRequest(loginHint: String?) {
@@ -116,13 +127,10 @@ class AppAuthService {
         }
         authRequest = authRequestBuilder.build()
     }
-
-    private fun warmUpBrowser(): CompletableFuture<Boolean> {
-        return CompletableFuture.supplyAsync {
-            val intentBuilder = authService!!.createCustomTabsIntentBuilder(authRequest!!.toUri())
-            authIntent = intentBuilder.build()
-            true
-        }
+    private fun warmUpBrowserAsync() = async {
+        val intentBuilder = authService!!.createCustomTabsIntentBuilder(authRequest!!.toUri())
+        authIntent = intentBuilder.build()
+        true
     }
 
     private fun recreateAuthorizationService() {
@@ -151,8 +159,8 @@ class AppAuthService {
         initClient()
     }
 
-    fun doAuth(usePendingIntent: Boolean, requestCode: Int) {
-        isWarmUpBrowser!!.thenRunAsync {
+    suspend fun doAuth(usePendingIntent: Boolean, requestCode: Int) {
+        if(isWarmUpBrowser.await()) {
             if (usePendingIntent) {
                 Log.i(TAG, "doAuth(): usePendingIntent")
                 val completionIntent = Intent(context, completeActivity!!.javaClass)
@@ -172,6 +180,8 @@ class AppAuthService {
                     ActivityHelper.getActivity()!!.startActivityForResult(it, requestCode)
                 }
             }
+        } else {
+            throw Exception("Browser is not warm up!")
         }
     }
 
@@ -180,33 +190,35 @@ class AppAuthService {
         val exception = AuthorizationException.fromIntent(intent)
 
         if (response == null || exception != null) {
-            return Single.create { emitter ->
+            return rxSingle {
                 if (exception != null) {
-                    emitter.onError(exception)
+                    throw exception
                 } else {
-                    emitter.onError(Throwable("Response is NULL!"))
+                    throw Throwable("Response is NULL!")
                 }
             }
         }
-        authState!!.update(response, null)
-        return Single.create { source ->
-            performTokenRequest(response.createTokenExchangeRequest(),
-                AuthorizationService.TokenResponseCallback { r, e ->
-                    authState?.let {
-                        it.update(r, e)
-                        if (it.isAuthorized) {
-                            source.onSuccess(it)
-                        } else {
-                            "Authorization Code exchange failed: ${e?.message}".also { msg ->
-                                Log.w(TAG, msg)
-                                source.onError(IllegalAccessException(msg))
+        authState!!.update(response!!, null)
+        return rxSingle {
+            suspendCoroutine<AuthState> { continuation ->
+                performTokenRequest(response.createTokenExchangeRequest(),
+                    AuthorizationService.TokenResponseCallback { r, e ->
+                        authState?.let {
+                            it.update(r, e)
+                            if (it.isAuthorized) {
+                                continuation.resume(it)
+                            } else {
+                                "Authorization Code exchange failed: ${e?.message}".also { msg ->
+                                    Log.w(TAG, msg)
+                                    continuation.resumeWithException(IllegalAccessException(msg))
+                                }
                             }
+                            return@TokenResponseCallback
                         }
-                        return@TokenResponseCallback
+                        continuation.resumeWithException(IllegalStateException("Current State is null and can't be updated"))
                     }
-                    source.onError(IllegalStateException("Current State is null and can't be updated"))
-                }
-            )
+                )
+            }
         }
     }
 
@@ -220,80 +232,83 @@ class AppAuthService {
             }
         } catch (ex: ClientAuthentication.UnsupportedAuthenticationMethod) {
             Log.d(TAG, "Token request cannot be made, client authentication for the token endpoint could not be constructed $ex")
-            return
+            throw ex
         }
     }
 
     fun fetchUserInfo(): Maybe<JSONObject> {
-        return Maybe.create { source ->
-            authState!!.performActionWithFreshTokens(authService!!) { accessToken, _, ex ->
-                if (ex != null) {
-                    Log.e(TAG, "Token refresh failed when fetching user info")
-                    source.onError(ex)
-                    return@performActionWithFreshTokens
+        return rxMaybe {
+            Log.i(TAG, "async start: ====== ")
+            if (authState == null || authService == null)
+                throw Throwable("authState is Null")
+
+            val accessToken = suspendCoroutine<String> { continuation ->
+                authState!!.performActionWithFreshTokens(authService!!) { token, _, ex ->
+                    ex?.
+                        run { continuation.resumeWithException(LiveException(LiveException.Type.ERROR_NETWORK, ex)) }
+                        ?: token?.
+                            let { continuation.resume(it) }
+                            ?: let { continuation.resume("") }
                 }
+            }
 
-                val discovery = authState!!.authorizationServiceConfiguration!!.discoveryDoc
+            if (accessToken.isEmpty() || appAuthConfig == null)
+                return@rxMaybe null
 
-                val userInfoEndpoint = if (appAuthConfig!!.user_info_endpoint_uri != null)
-                    appAuthConfig!!.user_info_endpoint_uri!!.toString()
-                else
-                    discovery!!.userinfoEndpoint!!.toString()
+            val userInfoEndpoint =
+                appAuthConfig!!.user_info_endpoint_uri
+                    ?.toString()
+                    ?: authState?.authorizationServiceConfiguration?.discoveryDoc?.userinfoEndpoint?.toString()
+                    ?:""
 
-                Http.getUserInfo(userInfoEndpoint, accessToken!!)
-                    .subscribeOn(Schedulers.io())
-                    .subscribe { info ->
-                        Log.d(TAG, "fetchUserInfo(): info = $info")
-                        if (info.isEmpty())
-                            source.onComplete()
-                        else {
-                            try {
-                                source.onSuccess(JSONObject(info))
-                            } catch (e: JSONException) {
-                                Log.w(TAG, "fetchUserInfo(): JSONException: ", e)
-                                source.onError(e)
-                            }
 
+        Http.getUserInfo(userInfoEndpoint, accessToken)?.run {
+                    Log.d(TAG, "fetchUserInfo(): info = $this")
+                    if (this.isEmpty())
+                        null
+                    else {
+                        try {
+                            JSONObject(this)
+                        } catch (e: JSONException) {
+                            Log.w(TAG, "fetchUserInfo(): JSONException: ", e)
+                            throw LiveException(LiveException.Type.ERROR_GENERAL, e)
                         }
                     }
-            }
+                }
         }
     }
 
     fun refreshAccessToken(): Single<AuthState> {
-        return Single.create { source ->
-            performTokenRequest(authState!!.createTokenRefreshRequest(),
-                AuthorizationService.TokenResponseCallback { tokenResponse, exception ->
-                    authState!!.update(tokenResponse, exception)
-                    if (exception != null) {
-                        source.onError(exception)
-                    } else {
-                        source.onSuccess(authState!!)
+        return rxSingle {
+            suspendCoroutine<AuthState> { continuation ->
+                performTokenRequest(
+                    authState!!.createTokenRefreshRequest(),
+                    AuthorizationService.TokenResponseCallback { tokenResponse, exception ->
+                        authState!!.update(tokenResponse, exception)
+                        if (exception != null) {
+                            continuation.resumeWithException(exception)
+                        } else {
+                            continuation.resume(authState!!)
+                        }
                     }
-                })
-        }
-
-    }
-
-    fun signOut(): Single<AuthState> {
-        return Single.create { emitter ->
-            when {
-                authState == null ->
-                    emitter.onError(IllegalArgumentException("authState is Null"))
-
-                authState!!.authorizationServiceConfiguration == null ->
-                    emitter.onError(IllegalArgumentException("authState has empty configuration"))
-
-                else -> {
-                    AuthState(authState!!.authorizationServiceConfiguration!!).let {
-                        authState = it
-                        emitter.onSuccess(it)
-                    }
-                }
+                )
             }
         }
     }
 
+    fun signOut(): Single<AuthState> {
+        return rxSingle {
+            when {
+                authState == null ->
+                    throw IllegalArgumentException("authState is Null")
+
+                authState!!.authorizationServiceConfiguration == null ->
+                    throw IllegalArgumentException("authState has empty configuration")
+
+                else -> AuthState(authState!!.authorizationServiceConfiguration!!).also { authState = it }
+            }
+        }
+    }
 
     fun destroy() {
         Log.d(TAG, "destroy(): authService = $authService")
