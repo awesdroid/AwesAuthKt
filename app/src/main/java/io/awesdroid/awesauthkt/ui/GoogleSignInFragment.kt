@@ -27,6 +27,7 @@ import io.awesdroid.awesauthkt.utils.TYPE_GSI
 import io.awesdroid.awesauthkt.utils.TYPE_NONE
 import io.awesdroid.awesauthkt.viewmodel.GoogleSignInViewModel
 import io.awesdroid.awesauthkt.viewmodel.SettingsViewModel
+import io.awesdroid.libkt.android.exceptions.LiveException
 import io.awesdroid.libkt.common.utils.TAG
 import io.awesdroid.libkt.common.utils.prettyJsonObject
 import kotlinx.android.synthetic.main.auth_status.*
@@ -41,6 +42,7 @@ class GoogleSignInFragment : Fragment() {
 
     private lateinit var googleSignInViewModel: GoogleSignInViewModel
     private lateinit var progressDialog: Dialog
+    private lateinit var alertDialog: AlertDialog
 
 
     override fun onCreateView(
@@ -69,6 +71,7 @@ class GoogleSignInFragment : Fragment() {
             Log.d(TAG, "onChanged(): account = $account")
             updateUI(account)
         })
+        googleSignInViewModel.getError().observe(requireActivity(), Observer { handleError(it) })
 
         ViewModelProviders.of(requireActivity()).get(SettingsViewModel::class.java).let {
             it.getAuthType().observe(requireActivity(), Observer { type -> this.setAuthType(type) })
@@ -195,5 +198,16 @@ class GoogleSignInFragment : Fragment() {
     private fun setUseIdToken(useIdToken: Boolean) {
         Log.d(TAG, "setUseIdToken(): useIdToken = $useIdToken")
         this.useIdToken = useIdToken
+    }
+
+    private fun handleError(error: LiveException) {
+        progressDialog.takeIf { it.isShowing }?.dismiss()
+        alertDialog = AlertDialog.Builder(requireContext())
+            .setTitle(error.type.name)
+            .setMessage(error.exception.message)
+            .setPositiveButton("OK") { _, _ ->
+                alertDialog.dismiss()
+                requireActivity().finish()
+            }.show()
     }
 }
