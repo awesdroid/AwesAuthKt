@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import io.awesdroid.awesauthkt.service.GoogleSignInService
+import io.awesdroid.libkt.android.exceptions.LiveException
 import io.awesdroid.libkt.android.ui.ActivityHelper
 import io.awesdroid.libkt.common.utils.TAG
 import io.reactivex.schedulers.Schedulers
@@ -38,11 +39,15 @@ class GoogleSignInViewModel(application: Application) : AndroidViewModel(applica
     fun refreshToken() {
         googleSignInService.refreshToken()
             .observeOn(Schedulers.io())
-            .subscribe { account.postValue(it) }
+            .subscribe { ret -> account.postValue(ret) }
     }
 
     fun getAccount(): LiveData<GoogleSignInAccount> {
         return account
+    }
+
+    fun getError(): LiveData<LiveException> {
+        return googleSignInService.getError()
     }
 
     override fun onCleared() {
