@@ -3,7 +3,7 @@ package io.awesdroid.awesauthkt.model
 import com.google.gson.GsonBuilder
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 class GoogleSignInConfig {
     val client_id: String? = null

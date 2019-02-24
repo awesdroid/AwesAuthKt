@@ -22,9 +22,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import io.awesdroid.awesauthkt.R
-import io.awesdroid.awesauthkt.utils.*
+import io.awesdroid.awesauthkt.utils.RC_SIGN_IN
+import io.awesdroid.awesauthkt.utils.TYPE_GSI
+import io.awesdroid.awesauthkt.utils.TYPE_NONE
 import io.awesdroid.awesauthkt.viewmodel.GoogleSignInViewModel
 import io.awesdroid.awesauthkt.viewmodel.SettingsViewModel
+import io.awesdroid.libkt.common.utils.TAG
+import io.awesdroid.libkt.common.utils.prettyJsonObject
 import kotlinx.android.synthetic.main.auth_status.*
 import kotlinx.android.synthetic.main.fragment_google_signin.*
 import kotlinx.android.synthetic.main.fragment_google_signin.view.*
@@ -174,7 +178,7 @@ class GoogleSignInFragment : Fragment() {
             val json = JSONObject(account.zac())
             if (json.has("tokenId"))
                 json.remove("tokenId")
-            prettyJsonString = Utils.prettyJson(json)
+            prettyJsonString = prettyJsonObject(json)
         } catch (e: Exception) {
             e.printStackTrace()
         }

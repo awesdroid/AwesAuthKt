@@ -6,16 +6,16 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.GsonBuilder
 import io.awesdroid.awesauthkt.model.AppAuthConfig
-import io.awesdroid.awesauthkt.model.UriAdapter
+import io.awesdroid.libkt.android.gson.UriAdapter
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 @Entity(tableName = "config")
 class ConfigEntity {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
-    var appAuthConfig: AppAuthConfig? = null
+    lateinit var appAuthConfig: AppAuthConfig
 
     constructor(){}
 

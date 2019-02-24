@@ -19,9 +19,14 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import io.awesdroid.awesauthkt.R
 import io.awesdroid.awesauthkt.model.AppAuthState
-import io.awesdroid.awesauthkt.utils.*
+import io.awesdroid.awesauthkt.utils.RC_AUTH
+import io.awesdroid.awesauthkt.utils.TYPE_APPAUTH
+import io.awesdroid.awesauthkt.utils.TYPE_NONE
 import io.awesdroid.awesauthkt.viewmodel.AppAuthViewModel
 import io.awesdroid.awesauthkt.viewmodel.SettingsViewModel
+import io.awesdroid.libkt.android.exceptions.LiveException
+import io.awesdroid.libkt.common.utils.TAG
+import io.awesdroid.libkt.common.utils.prettyJsonString
 import kotlinx.android.synthetic.main.auth_status.*
 import kotlinx.android.synthetic.main.fragment_appauth.*
 import kotlinx.android.synthetic.main.fragment_appauth.view.*
@@ -46,6 +51,7 @@ class AppAuthFragment : Fragment() {
     private var authType: String? = null
     private var usePendingIntent = false
     private lateinit var progressDialog: Dialog
+    private lateinit var alertDialog: AlertDialog
 
 
     override fun onCreateView(
@@ -75,6 +81,8 @@ class AppAuthFragment : Fragment() {
 
         rootView?.token_info_container?.visibility = View.GONE
         rootView?.userinfo_container?.visibility = View.GONE
+
+        appAuthViewModel.getError().observe(this, Observer { handleError(it) })
 
         return rootView
     }
@@ -225,7 +233,7 @@ class AppAuthFragment : Fragment() {
             e.printStackTrace()
         }
 
-        this.userinfo.text = Utils.prettyJson(userInfo.toString())
+        this.userinfo.text = prettyJsonString(userInfo.toString())
 
     }
 
@@ -255,5 +263,16 @@ class AppAuthFragment : Fragment() {
     private fun refreshToken() {
         progressDialog.show()
         appAuthViewModel.refreshToken()
+    }
+
+    private fun handleError(error: LiveException) {
+        progressDialog.takeIf { it.isShowing }?.dismiss()
+        alertDialog = AlertDialog.Builder(requireContext())
+            .setTitle(error.type.name)
+            .setMessage(error.exception.message)
+            .setPositiveButton("OK") { _, _ ->
+                alertDialog.dismiss()
+                requireActivity().finish()
+            }.show()
     }
 }

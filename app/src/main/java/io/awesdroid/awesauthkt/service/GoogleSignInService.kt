@@ -10,7 +10,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.gson.GsonBuilder
 import io.awesdroid.awesauthkt.R
 import io.awesdroid.awesauthkt.model.GoogleSignInConfig
-import io.awesdroid.awesauthkt.utils.TAG
+import io.awesdroid.libkt.common.utils.TAG
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -19,7 +19,7 @@ import java.io.InputStreamReader
 import java.nio.charset.StandardCharsets
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 class GoogleSignInService {
     private var activity: Activity? = null

@@ -7,11 +7,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import io.awesdroid.awesauthkt.di.DaggerRepositoryComponent
 import io.awesdroid.awesauthkt.repository.SettingsRepository
-import io.awesdroid.awesauthkt.utils.TAG
+import io.awesdroid.libkt.common.utils.TAG
 import javax.inject.Inject
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
 

@@ -1,7 +1,7 @@
 package io.awesdroid.awesauthkt.utils
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 // Result Code
 const val RC_AUTH = 100

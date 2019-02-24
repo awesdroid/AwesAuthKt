@@ -10,12 +10,13 @@ import androidx.lifecycle.MediatorLiveData
 import io.awesdroid.awesauthkt.di.DaggerRepositoryComponent
 import io.awesdroid.awesauthkt.model.AppAuthState
 import io.awesdroid.awesauthkt.repository.AppAuthRepository
-import io.awesdroid.awesauthkt.utils.TAG
+import io.awesdroid.libkt.android.exceptions.LiveException
+import io.awesdroid.libkt.common.utils.TAG
 import org.json.JSONObject
 import javax.inject.Inject
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 class AppAuthViewModel(application: Application) : AndroidViewModel(application) {
     @Inject
@@ -59,6 +60,10 @@ class AppAuthViewModel(application: Application) : AndroidViewModel(application)
 
     fun getUserInfo(): LiveData<JSONObject> {
         return userInfo
+    }
+
+    fun getError(): LiveData<LiveException> {
+        return repository.getError()
     }
 
     override fun onCleared() {

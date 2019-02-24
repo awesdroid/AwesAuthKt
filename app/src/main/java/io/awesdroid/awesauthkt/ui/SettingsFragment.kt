@@ -11,11 +11,11 @@ import androidx.preference.SwitchPreference
 import io.awesdroid.awesauthkt.R
 import io.awesdroid.awesauthkt.utils.TYPE_APPAUTH
 import io.awesdroid.awesauthkt.utils.TYPE_NONE
-import io.awesdroid.awesauthkt.utils.TAG
 import io.awesdroid.awesauthkt.viewmodel.SettingsViewModel
+import io.awesdroid.libkt.common.utils.TAG
 
 /**
- * @auther Awesdroid
+ * @author Awesdroid
  */
 class SettingsFragment: PreferenceFragmentCompat() {
 

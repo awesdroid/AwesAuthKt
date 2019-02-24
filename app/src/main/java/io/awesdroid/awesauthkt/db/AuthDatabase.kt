@@ -12,8 +12,8 @@ import io.awesdroid.awesauthkt.db.dao.ConfigDao
 import io.awesdroid.awesauthkt.db.dao.StateDao
 import io.awesdroid.awesauthkt.db.entity.ConfigEntity
 import io.awesdroid.awesauthkt.db.entity.StateEntity
-import io.awesdroid.awesauthkt.utils.ActivityHelper
-import io.awesdroid.awesauthkt.utils.mutableLazy
+import io.awesdroid.libkt.android.ui.ActivityHelper
+import io.awesdroid.libkt.common.utils.mutableLazy
 
 /**
  * @author Awesdroid
