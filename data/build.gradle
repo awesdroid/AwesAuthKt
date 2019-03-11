@@ -1,0 +1,86 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion build_version.compile_sdk
+    defaultConfig {
+        minSdkVersion build_version.min_sdk
+        targetSdkVersion build_version.target_sdk
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner deps.test.InstrumentationRunner
+        manifestPlaceholders = [
+                'appAuthRedirectScheme': ""
+        ]
+
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+}
+// Remark for java.lang.NoClassDefFoundError: com/google/common/collect/ImmutableMap in unit test
+//configurations {
+//    compile.exclude module: "guava"
+//}
+
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':domain')
+    implementation deps.libkt
+    implementation deps.kotlin.coroutines_rx2
+    // Google SignIn
+    implementation deps.play_services_auth
+    // AppAuth
+    // Fix CustomTab issue
+    // https://github.com/openid/AppAuth-Android/issues/423#issuecomment-447013411
+    implementation deps.appauth
+    // Retrofit
+    implementation deps.retrofit2.retrofit
+    implementation deps.retrofit2.adapter_rxjava2
+    implementation deps.retrofit2.converter_scalars
+    implementation deps.okhttp3
+    implementation deps.okhttp3_logging
+    // Room
+    implementation deps.room.runtime
+    kapt deps.kapt.room_compiler
+    // Kodein
+    implementation deps.kodein.generic
+    implementation deps.kodein.android_core
+    implementation deps.kodein.android_x
+    implementation deps.androidx.lifecycle_extensions
+    //Test
+    testImplementation deps.test.junit
+    testImplementation deps.test.junit
+    testImplementation deps.test.robolectric
+    testImplementation deps.test.mockito
+    testImplementation deps.test.test_core
+
+    androidTestImplementation deps.test.test_core
+    androidTestImplementation deps.test.test_runner
+    androidTestImplementation deps.test.test_rules
+    androidTestImplementation deps.test.test_ext_junit
+    androidTestImplementation deps.test.test_ext_truth
+    androidTestImplementation deps.test.test_google_truth
+}

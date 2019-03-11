@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">data</string>
+
+    <!--Preference-->
+    <string name="pref_auth_type_list">Authorization Type</string>
+    <string name="pref_key_google_auth_type">pk_google_auth_type</string>
+    <string-array name="pref_auth_list_titles">
+        <item>AppAuth</item>
+        <item>Google Sign-in</item>
+    </string-array>
+    <string-array name="pref_auth_list_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+    <!--Google Sign In-->
+    <string name="pref_key_use_id_token">pk_use_id_token</string>
+    <string name="pref_key_use_id_token_title">Use ID Token</string>
+
+    <!--Use PendingIntent-->
+    <string name="pref_key_use_pending_intent">pk_use_pending_intent</string>
+    <string name="cb_use_pending_intent_title">Use PendingIntent</string>
+    <string name="cb_use_pending_intent_summary">Summary: Use PendingIntent</string>
+    <!--<string name="fetching_token">Start fetching token …</string>-->
+</resources>
