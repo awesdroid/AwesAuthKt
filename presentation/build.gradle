@@ -1,0 +1,94 @@
+import groovy.json.JsonSlurper
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+def getRedirectScheme() {
+    def inputFile = new File("${rootDir}/data/src/main/res/raw/google_config.json")
+    def json = new JsonSlurper().parseText(inputFile.text)
+    String labels = json.redirect_uri
+    def idx = labels.indexOf(':')
+    if (idx != 0) {
+        labels = labels.substring(0, idx)
+    }
+    return labels
+}
+
+android {
+    compileSdkVersion build_version.compile_sdk
+    defaultConfig {
+        applicationId "io.awesdroid.awesauthkt"
+        minSdkVersion build_version.min_sdk
+        targetSdkVersion build_version.target_sdk
+        versionCode 5
+        versionName "1.0.0"
+        testInstrumentationRunner deps.test.InstrumentationRunner
+
+        manifestPlaceholders = [
+                'appAuthRedirectScheme': getRedirectScheme()
+        ]
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':domain')
+    implementation project(':data')
+
+    implementation deps.kotlin.stdlib_jdk8
+    implementation deps.kotlin.reflect
+    implementation deps.kotlin.coroutines_rx2
+
+    implementation deps.androidx.appcompat
+    implementation deps.androidx.core_ktx
+    implementation deps.androidx.constraintlayout
+    implementation deps.androidx.preference
+    implementation deps.androidx.lifecycle_extensions
+    implementation deps.androidx.material
+
+    implementation deps.gson
+
+    implementation deps.rx2.rxandroid
+
+    //Glide
+    implementation deps.glide.glide
+    implementation deps.glide.glide_transformations
+
+    // Kodein
+    implementation deps.kodein.generic
+    implementation deps.kodein.android_core
+    implementation deps.kodein.android_x
+
+    // LeakCanary
+    debugImplementation deps.leakcanary.android
+    releaseImplementation deps.leakcanary.android_no_op
+    implementation deps.libkt
+
+    // Test
+    testImplementation deps.test.junit
+    androidTestImplementation deps.test.test_core
+    androidTestImplementation deps.test.test_runner
+    androidTestImplementation deps.test.test_rules
+    androidTestImplementation deps.test.test_ext_junit
+    androidTestImplementation deps.test.test_ext_truth
+    androidTestImplementation deps.test.test_google_truth
+    androidTestImplementation deps.test.expresso
+
+}

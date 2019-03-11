@@ -1,0 +1,51 @@
+{
+    "refreshToken": "xxx",
+    "scope": "https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
+    "lastAuthorizationResponse": {
+        "request": {
+            "configuration": {
+                "authorizationEndpoint": "https://accounts.google.com/o/oauth2/v2/auth",
+                "tokenEndpoint": "https://www.googleapis.com/oauth2/v4/token"
+            },
+            "clientId": "xxx",
+            "responseType": "code",
+            "redirectUri": "xxx.xxx/",
+            "scope": "openid email profile",
+            "state": "NwipC2G4odW8pwCBVakx_Q",
+            "nonce": "pQNfkCvAd32N7P54FU9Djg",
+            "codeVerifier": "Nr1rnufqDfOva_LTkEXtjTkZn5MKly8eL33v1Ubr0dS-_eEdNPQS4acdZy0N1qxImz0EGK-Q3RZaZP8ujwNbGQ",
+            "codeVerifierChallenge": "mPutSXpEtE56rjVOuCbFwlUHAgJrRW6OhzNZpmQHH7Q",
+            "codeVerifierChallengeMethod": "S256",
+            "additionalParameters": {}
+        },
+        "state": "NwipC2G4odW8pwCBVakx_Q",
+        "code": "xxx",
+        "scope": "openid email profile https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
+        "additional_parameters": {
+            "authuser": "1",
+            "session_state": "44e16d08706e50bdda5a7137b89bdc8add143b8e..f0bb",
+            "prompt": "consent"
+        }
+    },
+    "mLastTokenResponse": {
+        "request": {
+            "configuration": {
+                "authorizationEndpoint": "https://accounts.google.com/o/oauth2/v2/auth",
+                "tokenEndpoint": "https://www.googleapis.com/oauth2/v4/token"
+            },
+            "clientId": "xxx",
+            "nonce": "pQNfkCvAd32N7P54FU9Djg",
+            "grantType": "authorization_code",
+            "redirectUri": "xxx.xxx:/",
+            "authorizationCode": "xxx",
+            "additionalParameters": {}
+        },
+        "token_type": "Bearer",
+        "access_token": "xxxx",
+        "expires_at": 1547973198455,
+        "id_token": "xxx",
+        "refresh_token": "xxx",
+        "scope": "https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
+        "additionalParameters": {}
+    }
+}
