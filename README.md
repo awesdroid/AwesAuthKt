@@ -7,6 +7,14 @@ This app is a demonstration of using [AppAuth for Android](https://github.com/op
 [Google Sign-In for Android](https://developers.google.com/identity/sign-in/android/start) for OAuth2
 and authentication.
 
+<div align:left;display:inline;>
+<img width="135" height="240" src="images/appauth_sign_out.png"/>
+<img width="135" height="240" src="images/appauth_sign_in.png"/>
+<img width="135" height="240" src="images/gsi_sign_out.png"/>
+<img width="135" height="240" src="images/gsi_sign_in.png"/>
+<img width="135" height="240" src="images/settings_appauth.png"/>
+</div>
+
 ### Architecture
 This app implements the [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) proposed by Robert C. Martin (Uncle Bob)
 
