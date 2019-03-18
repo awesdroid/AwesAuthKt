@@ -3,10 +3,16 @@
     <string name="title_activity_main">AwesAuth</string>
     <string name="title_auth">Authorization</string>
     <string name="title_settings">Settings</string>
-    <string name="select_auth_type">Please select \'Authorization Type\' firstly</string>
 
-    <string name="auth_not_granted">Authorization NOT Granted</string>
+    <string name="home_text">Try following authorization</string>
+    <string name="appauth">AppAuth for Android</string>
+    <string name="gsi">Google Sign-In</string>
+
+
+    <string name="auth_not_granted">Authorization NOT GRANTED</string>
     <string name="auth_granted">Authorization GRANTED !</string>
+
+    <!--AppAuth-->
     <string name="sign_in">Sign In with AppAuth</string>
     <string name="sign_out">Sign Out</string>
     <string name="refresh_token">Refresh Token</string>

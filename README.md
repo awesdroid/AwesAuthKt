@@ -8,11 +8,12 @@ This app is a demonstration of using [AppAuth for Android](https://github.com/op
 and authentication.
 
 <div align:left;display:inline;>
+<img width="135" height="240" src="images/home.png"/>
 <img width="135" height="240" src="images/appauth_sign_out.png"/>
 <img width="135" height="240" src="images/appauth_sign_in.png"/>
 <img width="135" height="240" src="images/gsi_sign_out.png"/>
 <img width="135" height="240" src="images/gsi_sign_in.png"/>
-<img width="135" height="240" src="images/settings_appauth.png"/>
+<img width="135" height="240" src="images/settings.png"/>
 </div>
 
 ### Architecture

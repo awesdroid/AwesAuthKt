@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@+id/dest_home">
+
+    <fragment
+        android:id="@+id/dest_home"
+        android:name="io.awesdroid.awesauthkt.presentation.ui.HomeFragment"
+        android:label="@string/title_auth"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_dest_home_to_dest_appauth"
+            app:destination="@id/dest_appauth" />
+        <action
+            android:id="@+id/action_dest_home_to_dest_gsi"
+            app:destination="@id/dest_gsi" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_appauth"
+        android:name="io.awesdroid.awesauthkt.presentation.ui.AppAuthFragment"
+        android:label="@string/appauth"
+        tools:layout="@layout/fragment_appauth">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_gsi"
+        android:name="io.awesdroid.awesauthkt.presentation.ui.GoogleSignInFragment"
+        android:label="@string/gsi"
+        tools:layout="@layout/fragment_google_signin">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_settings"
+        android:name="io.awesdroid.awesauthkt.presentation.ui.SettingsFragment"
+        android:label="@string/title_settings"
+        >
+
+    </fragment>
+
+</navigation>
