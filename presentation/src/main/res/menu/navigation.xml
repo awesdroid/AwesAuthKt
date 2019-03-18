@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_auth"
+        android:id="@+id/dest_home"
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_auth"/>
 
     <item
-        android:id="@+id/navigation_settings"
+        android:id="@+id/dest_settings"
         android:icon="@drawable/ic_settings_black_24dp"
         android:title="@string/title_settings"/>
 

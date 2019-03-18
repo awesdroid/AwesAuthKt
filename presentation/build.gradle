@@ -62,6 +62,8 @@ dependencies {
     implementation deps.androidx.preference
     implementation deps.androidx.lifecycle_extensions
     implementation deps.androidx.material
+    implementation deps.androidx.navigation_fragment_ktx
+    implementation deps.androidx.navigation_ui_ktx
 
     implementation deps.gson
 
@@ -90,5 +92,6 @@ dependencies {
     androidTestImplementation deps.test.test_ext_truth
     androidTestImplementation deps.test.test_google_truth
     androidTestImplementation deps.test.expresso
+
 
 }

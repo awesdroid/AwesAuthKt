@@ -11,17 +11,19 @@
     <RelativeLayout
         android:id="@+id/toolbar_container"
         android:layout_width="match_parent"
-        android:layout_height="41dp"
+        android:layout_height="60dp"
         android:elevation="24dp"
         android:background="@color/colorPrimary"
-        tools:layout_editor_absoluteY="-1dp">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="title">
+        <!--tools:layout_editor_absoluteY="-1dp">-->
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/my_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:theme="@style/AppTheme"
-            />
+            app:titleTextColor="@android:color/white" />
 
         <TextView
             android:layout_width="match_parent"
@@ -30,26 +32,37 @@
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:text="@string/title_auth"
+            tools:text="@string/title_auth"
             android:id="@+id/toolbar_text"
             />
 
     </RelativeLayout>
 
-    <FrameLayout
-        android:id="@+id/content"
+    <!--<FrameLayout-->
+        <!--android:id="@+id/content"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/toolbar_container"-->
+        <!--app:layout_constraintBottom_toTopOf="@+id/navigation"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--&gt;-->
+
+    <!--</FrameLayout>-->
+    <fragment
+        android:id="@+id/host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/toolbar_container"
-        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_nav_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        >
-
-    </FrameLayout>
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navigation"
+        android:id="@+id/bottom_nav_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="0dp"

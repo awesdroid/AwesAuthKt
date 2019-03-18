@@ -15,8 +15,6 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
-import io.awesdroid.awesauthkt.data.TYPE_APPAUTH
-import io.awesdroid.awesauthkt.data.TYPE_NONE
 import io.awesdroid.awesauthkt.data.exception.AbstractException
 import io.awesdroid.awesauthkt.data.exception.UnRecoverableException
 import io.awesdroid.awesauthkt.domain.entity.AppAuthState
@@ -50,7 +48,6 @@ class AppAuthFragment: BaseFragment() {
     private val settingsViewModel: SettingsViewModel by instance()
 
     private var initViewModel = false
-    private var authType: String? = null
     private var usePendingIntent = false
     private lateinit var progressDialog: Dialog
     private lateinit var alertDialog: AlertDialog
@@ -84,6 +81,10 @@ class AppAuthFragment: BaseFragment() {
         rootView?.token_info_container?.visibility = View.GONE
         rootView?.userinfo_container?.visibility = View.GONE
 
+        if(!initViewModel ) {
+            appAuthViewModel.init(context!!, requireActivity(), requireActivity())
+            initViewModel = true
+        }
 
         return rootView
     }
@@ -91,30 +92,12 @@ class AppAuthFragment: BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        settingsViewModel.let {
-            it.getAuthType().observe(this, Observer { type -> this.handleAuthType(type) })
-            it.isAppAuthUsePendingIntent().observe(this, Observer { ret -> this.handleUsePendingIntent(ret) })
-        }
+        settingsViewModel.isAppAuthUsePendingIntent()
+            .observe(this, Observer { ret -> this.handleUsePendingIntent(ret) })
 
         appAuthViewModel.getError().observe(this, Observer { handleError(it) })
         appAuthViewModel.getAuthState().observe(this, Observer { this.handleAuthState(it) })
         appAuthViewModel.getUserInfo().observe(this, Observer { this.handleUserInfo(it) })
-    }
-
-
-    override fun onDestroy() {
-        Log.d(TAG, "onDestroy: ")
-        super.onDestroy()
-    }
-
-
-    private fun handleAuthType(type: String) {
-        Log.d(TAG, "handleAuthType(): type = $type")
-        authType = type
-        if( type == TYPE_APPAUTH && !initViewModel ) {
-            appAuthViewModel.init(context!!, requireActivity(), requireActivity())
-            initViewModel = true
-        }
     }
 
     private fun handleUsePendingIntent(usePendingIntent: Boolean) {
@@ -161,19 +144,8 @@ class AppAuthFragment: BaseFragment() {
     }
 
     private fun signIn(usePendingIntent: Boolean) {
-        when (authType) {
-            TYPE_NONE -> AlertDialog.Builder(requireActivity())
-                .setMessage(getString(R.string.select_auth_type))
-                .setPositiveButton(R.string.ok) { _, _ -> (activity as MainActivity).navigateToSettings() }
-                .setNegativeButton(R.string.cancel, null)
-                .setCancelable(true)
-                .show()
-            TYPE_APPAUTH -> {
-                progressDialog.show()
-                appAuthViewModel.signIn(usePendingIntent, RC_AUTH)
-            }
-            else -> throw IllegalStateException("authType is not 0")
-        }
+        progressDialog.show()
+        appAuthViewModel.signIn(usePendingIntent, RC_AUTH)
     }
 
 
